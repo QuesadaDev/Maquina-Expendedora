@@ -1,34 +1,41 @@
-tipos_moneda = [5, 10, 50, 100, 200]
-dinero_intro = [5, 10, 10, 50, 100]
-num_prod = 4
-cambio_arr = []
-
-productos = [("Coca-cola", 1, 80),
-             ("Monster", 2, 120),
-             ("Fanta", 3, 70),
-             ("Agua", 4, 60),
-             ("Nestea", 5, 220)
-             ]
+from producto import productos
 
 
-def expende(din_int, num_pro):
+def mostrar_productos():
+    for product in productos:
+        print(product)
+
+
+def introduce_monedas():
+
+    int_monedas = input("\nIntroduce las monedas separadas por comas: ")
+    monedas_introducidas = [int(moneda) for moneda in int_monedas.split(',')]
+
+    int_prod = input("Selecciona el número del producto: ")
+    producto_selecionado = int(int_prod)
+
+    return monedas_introducidas, producto_selecionado
+
+
+def expendedora(din_int, num_pro):
 
     suma = sum(din_int)
-    print(f"Se han introducido: {suma} monedas {din_int}")
+    print(f"\nSe han introducido: {suma} monedas {sorted(din_int)}")
 
     for element in productos:
-        if num_pro == element[1] and suma >= element[2]:
-            cambio = suma - element[2]
+        if num_pro == element.codigo and suma >= element.precio:
+            cambio = suma - element.precio
             cambio_arr = cambio_moneda(cambio)
-            return print(f"El producto elegido es: {element[0]}, con un precio de: {element[2]}"
+            return print(f"El producto elegido es: {element.nombre}, con un precio de: {element.precio}"
                          f" se devuelven: {cambio_arr} monedas")
 
-    if num_pro is not element[1] or suma < element[2]:
-        return print("Producto no encontrado o dinero insuficiente, se han devuelto: ", suma, "monedas", din_int)
+    return print("Producto no encontrado o dinero insuficiente, se han devuelto: ", suma, "monedas", din_int)
 
 
 def cambio_moneda(restante):
     cambio_total = []
+    tipos_moneda = [5, 10, 50, 100, 200]
+
     for ele in reversed(tipos_moneda):
         while restante % ele >= ele or restante >= ele:
             cambio_total.append(ele)
@@ -38,4 +45,6 @@ def cambio_moneda(restante):
     return cambio_total
 
 
-expende(dinero_intro, num_prod)
+mostrar_productos()
+monedas, producto = introduce_monedas()
+expendedora(monedas, producto)
